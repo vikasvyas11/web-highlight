@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Underlight",
   "description": "Highlight, underline, and leave notes on webpages. Revisit them in your private local library.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "minimum_chrome_version": "134",
   "options_page": "library.html",
   "permissions": [

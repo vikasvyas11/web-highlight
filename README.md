@@ -2,6 +2,20 @@
 
 Underlight is a local-first annotation extension for desktop Google Chrome, Microsoft Edge, and Brave. Select a passage to highlight it, underline it, or attach a note. Reopen the page to see your marks, or click the toolbar icon to browse everything you saved.
 
+## Underlight in use
+
+**Highlight a paper.** A blue highlight preserves a phrase about graph structure. The open toolbar is ready to mark a second passage. [Sanchez-Lengeling et al., *A Gentle Introduction to Graph Neural Networks*](https://distill.pub/2021/gnn-intro/)
+
+![Underlight’s seven-color toolbar and a blue highlight above the four-layer graph illustration in Distill](docs/images/graph-neural-networks.png)
+
+**Underline a research concept.** A pink line marks the phrase “understanding of images” above the paper’s visualization of network layers. [Olah, Mordvintsev and Schubert, *Feature Visualization*](https://distill.pub/2017/feature-visualization/)
+
+![A pink underline beneath the subtitle of Feature Visualization with the original figure and author credits visible](docs/images/feature-visualization.png)
+
+**Leave a question on a company page.** A saved note next to GitHub’s platform description records a point to check against its documentation. [About GitHub](https://github.com/about)
+
+![Underlight’s open note editor attached to a highlighted passage on GitHub’s company page](docs/images/github-company.png)
+
 ## Install from source
 
 1. Download and extract the repository ZIP from GitHub, or clone it to a folder you intend to keep.
@@ -26,8 +40,6 @@ Use a desktop browser based on Chromium 134 or newer. The extension runs directl
 
 ## Mark a passage
 
-![Underlight selection toolbar with seven colors above a marked passage](docs/images/selection.png)
-
 1. Select ordinary text on an HTTP or HTTPS webpage. A small toolbar appears next to the selection.
 2. Choose **yellow**, **orange**, **pink**, **red**, **green**, **blue**, or **black**. The outlined swatch shows the current choice.
 3. Choose **Highlight** for a filled mark or **Underline** for a line under the passage. Choose **Note** to write a comment, then click **Save**.
@@ -37,17 +49,29 @@ You can also right-click selected text and choose an action in the **Underlight*
 
 ## Use the library
 
-![Underlight library grouping a note, an underline, and a highlight by source page](docs/images/library.png)
-
 Click Underlight's toolbar icon or open the extension's options. The library groups annotations by page and places the most recently annotated pages first. Search the quoted text, note, title, or URL. Combine the type tabs with the color filter to narrow the list. Click a page title to reopen the source in a new tab. **Edit note** also works here if the source is offline or the passage has been removed.
 
 ## What gets saved
+
+At the top of the library, expand **Saved in this browser profile** for the exact extension subfolder for your installation. To find its parent directory, open `chrome://version`, `edge://version`, or `brave://version` in the same browser profile and look for **Profile Path**. The on-disk location is `<Profile Path>/Local Extension Settings/<Underlight extension ID>/`. These are browser-managed database files. Use the export below for a portable copy.
 
 Each annotation contains its type, color, selected text, up to 64 nearby characters on either side, original character offset, optional note, page title, URL, creation time, and an ID. Underlight stores each record separately in the browser profile's extension-local storage. Annotations created in different tabs can coexist.
 
 On return, Underlight finds the original wording and uses the surrounding text to resolve repeated passages. It retries when the page updates. Moving a paragraph or changing inline formatting can preserve a match. Edited or ambiguous passages may lose their on-page mark. Their saved text and notes remain in the library.
 
 Underlight stores annotations only. Opening the source still requires access to the webpage. The library itself works offline. Query parameters and hash routes beginning with `#/` or `#!/` identify different pages. Ordinary section links on a page share its marks.
+
+## Export material for a research agent
+
+1. Open the library. Use search, type, and color to choose the material to share. To include everything, clear search and select **All annotations** and **All colors**.
+2. Click **Export JSON**. Your browser downloads `underlight-research-YYYY-MM-DD.json` using its normal download location or save prompt. The export works offline.
+3. Attach the file to an AI research chat or put it in the workspace your local agent can read. The file contains the displayed annotations and links to the original papers and pages. Full papers can be supplied separately when your agent needs them.
+
+Each export identifies its format (`underlight-research`), schema version (`1`), and UTC export time. Each entry in `pages` has a title, source URL, and annotations. Each annotation has a stable ID, type, color, verbatim quote, optional user note, and UTC creation time. The `note` field is `null` for plain highlights and underlines.
+
+Example prompt to accompany the file:
+
+> Group my excerpts by research question. Cite the source URL for each finding. Attribute my comments to me, and identify questions that require reading the full paper.
 
 ## Privacy, permissions, and limits
 

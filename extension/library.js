@@ -2,6 +2,7 @@ const { colors, element, key } = Underlight;
 const $ = id => document.getElementById(id);
 const labels = { all: "All annotations", highlight: "Highlights", underline: "Underlines", note: "Notes" };
 let records = [], kind = "all", editing, sequence = 0;
+$("storage-folder").textContent = "Local Extension Settings/" + chrome.runtime.id;
 for (const name of Object.keys(colors)) $("color").add(new Option(name[0].toUpperCase() + name.slice(1), name));
 for (const [value, label] of Object.entries(labels)) {
   const tab = element("button", label);
@@ -66,6 +67,9 @@ function render() {
     [item.title, item.url, item.anchor.exact, item.note].some(s => s?.toLowerCase().includes(query))
   );
   const groups = Map.groupBy(matches, item => item.url);
+  $("export").disabled = !matches.length;
+  $("export").title = "Download the " + matches.length + " displayed annotations for a research agent";
+  $("export").onclick = () => exportAnnotations(groups);
   const filtered = kind !== "all" || color || query;
   const count = matches.length, pages = groups.size;
   $("summary").textContent = count + (filtered ? " matching annotation" : " saved annotation") + (count === 1 ? "" : "s") +
@@ -90,6 +94,30 @@ function render() {
   }
   $("results").replaceChildren(result);
 }
+
+function exportAnnotations(groups) {
+  const exportedAt = new Date().toISOString();
+  const pages = Array.from(groups, ([url, items]) => ({
+    title: items[0].title,
+    url,
+    annotations: items.map(item => ({
+      id: item.id,
+      type: item.kind,
+      color: item.color,
+      quote: item.anchor.exact,
+      note: item.note || null,
+      createdAt: new Date(item.created).toISOString()
+    }))
+  }));
+  const data = { format: "underlight-research", schemaVersion: 1, exportedAt, pages };
+  const blob = new Blob([JSON.stringify(data, null, 2) + "\n"], { type: "application/json;charset=utf-8" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "underlight-research-" + exportedAt.slice(0, 10) + ".json";
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(link.href), 30000);
+}
+
 async function refresh() {
   const version = ++sequence;
   try {

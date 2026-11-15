@@ -4,12 +4,22 @@
 <title>Library · Underlight</title><link rel="icon" href="icons/32.png"><link rel="stylesheet" href="library.css">
 <script src="shared.js" defer></script><script src="library.js" defer></script>
 </head><body>
-<header><div class="brand"><img src="icons/48.png" width="32" height="32" alt="">Underlight</div><span class="local"><i></i> Stored on this device</span></header>
+<header><div class="brand"><img src="icons/48.png" width="32" height="32" alt="">Underlight</div>
+  <details class="local"><summary>Saved in this browser profile</summary>
+    <div class="location"><strong>Annotation storage folder</strong>
+      <p>Find <b>Profile Path</b> on your browser’s version page. Within that folder, open</p>
+      <code id="storage-folder"></code>
+      <p>Version pages: <code>chrome://version</code>, <code>edge://version</code>, <code>brave://version</code>.</p>
+      <p>The browser manages the files here. Use <b>Export JSON</b> for a readable copy.</p>
+    </div>
+  </details>
+</header>
 <main>
   <div class="heading"><h1>Annotation library<span>.</span></h1><p id="summary" aria-live="polite">Loading annotations…</p></div>
   <section class="controls" aria-label="Library filters">
     <div class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" aria-label="Search annotations" placeholder="Search passages, notes, or pages"></div>
     <select id="color" aria-label="Filter by color"><option value="">All colors</option></select>
+    <button id="export" class="primary" disabled>Export JSON</button>
   </section>
   <nav id="kinds" aria-label="Annotation type"></nav>
   <section id="results" aria-label="Saved annotations"></section>

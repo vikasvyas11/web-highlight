@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import path from "node:path";
 import { existsSync } from "node:fs";
-import { mkdtemp, rm } from "node:fs/promises";
+import { access, mkdtemp, readFile, rm } from "node:fs/promises";
 import os from "node:os";
 import { chromium, expect } from "@playwright/test";
 
@@ -84,12 +84,22 @@ async function control(page, session, name) {
   await page.mouse.click(...result.value);
 }
 
+async function downloadExport(library) {
+  const [download] = await Promise.all([
+    library.waitForEvent("download"),
+    library.getByRole("button", { name: "Export JSON" }).click()
+  ]);
+  assert.match(download.suggestedFilename(), /^underlight-research-\d{4}-\d{2}-\d{2}\.json$/);
+  return JSON.parse(await readFile(await download.path(), "utf8"));
+}
+
 try {
   let { page, session, id } = await launch();
   await fixture(page);
   const lib = await context.newPage();
   await lib.goto("chrome-extension://" + id + "/library.html");
   await expect(lib.getByText("Save your first passage")).toBeVisible();
+  await expect(lib.getByRole("button", { name: "Export JSON" })).toBeDisabled();
   for (const kind of kinds) {
     for (const color of colors) {
       if (kind === "highlight" && color === "yellow") {
@@ -112,6 +122,22 @@ try {
     }
   }
   await expect(lib.locator("article")).toHaveCount(21);
+  await lib.getByText("Saved in this browser profile").click();
+  await expect(lib.locator("#storage-folder")).toHaveText("Local Extension Settings/" + id);
+  await access(path.join(profile, "Default", "Local Extension Settings", id));
+  await lib.getByText("Saved in this browser profile").click();
+  const fullExport = await downloadExport(lib);
+  assert.equal(fullExport.format, "underlight-research");
+  assert.equal(fullExport.schemaVersion, 1);
+  assert.equal(fullExport.pages.length, 1);
+  assert.equal(fullExport.pages[0].url, address);
+  assert.equal(fullExport.pages[0].title, "Practice page");
+  assert.deepEqual(new Set(fullExport.pages[0].annotations.map(a => a.type + "-" + a.color)),
+    new Set(kinds.flatMap(type => colors.map(color => type + "-" + color))));
+  for (const a of fullExport.pages[0].annotations) {
+    assert.ok(a.id && a.quote && Date.parse(a.createdAt));
+    if (a.type !== "note") assert.equal(a.note, null);
+  }
   await lib.getByRole("button", { name: "Notes", exact: true }).click();
   await lib.getByLabel("Filter by color").selectOption("black");
   await expect(lib.locator("article")).toHaveCount(1);
@@ -120,8 +146,13 @@ try {
   await lib.getByRole("button", { name: "Save", exact: true }).click();
   await lib.getByLabel("Search annotations").fill("edited locally");
   await expect(lib.locator("article")).toHaveCount(1);
+  const filteredExport = await downloadExport(lib);
+  assert.equal(filteredExport.pages[0].annotations.length, 1);
+  assert.equal(filteredExport.pages[0].annotations[0].note, "Edited locally");
+  assert.equal(filteredExport.pages[0].annotations[0].quote, "note a black passage.");
   await lib.getByLabel("Search annotations").fill("unrelated");
   await expect(lib.getByText("No matching annotations")).toBeVisible();
+  await expect(lib.getByRole("button", { name: "Export JSON" })).toBeDisabled();
 
   await context.close();
   ({ page, session, id } = await launch());
@@ -154,7 +185,7 @@ try {
   second.once("dialog", dialog => dialog.accept());
   await second.locator("article").filter({ hasText:"Reattached on the page" }).getByText("Delete").click();
   await expect(second.locator("article")).toHaveCount(20);
-  console.log("PASS: all 21 type/color combinations, library search, edit/delete, browser restart, DOM changes, missing quotes and URL navigation.");
+  console.log("PASS: 21 annotation combinations, storage location, full and filtered JSON downloads, library actions, restart and restoration.");
 } finally {
   await context?.close();
   await rm(profile, { recursive: true, force: true, maxRetries: 5 });

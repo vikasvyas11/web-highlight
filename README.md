@@ -72,7 +72,7 @@ npm test
 npm run docs:test
 ```
 
-The browser integration test uses a disposable profile and a locally fulfilled test page. It exercises the selection toolbar, every type/color combination, persistence after restarting the browser, changes to page content, in-page navigation, library search, editing and deletion. To use an installed browser, pass its executable path as an argument, for example on Windows:
+The browser integration test uses a disposable profile and a locally fulfilled test page. On Windows it uses the standard Chrome installation when present. Otherwise it uses Playwright's Chromium build. It exercises the selection toolbar, every type/color combination, persistence after restarting the browser, changes to page content, in-page navigation, library search, editing and deletion. To select a browser explicitly, pass its executable path as an argument.
 
 ```powershell
 npm test -- "C:/Program Files/Google/Chrome/Application/chrome.exe"

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import path from "node:path";
+import { existsSync } from "node:fs";
 import { mkdtemp, rm } from "node:fs/promises";
 import os from "node:os";
 import { chromium, expect } from "@playwright/test";
@@ -12,8 +13,9 @@ const kinds = ["highlight", "underline", "note"];
 let context;
 
 async function launch() {
-  const executablePath = process.argv[2] || process.env.UNDERLIGHT_BROWSER;
-  const brandedChrome = executablePath?.includes("Google") && executablePath.toLowerCase().endsWith("chrome.exe");
+  const systemChrome = process.platform === "win32" && path.join(process.env.ProgramFiles || "C:/Program Files", "Google/Chrome/Application/chrome.exe");
+  const executablePath = process.argv[2] || process.env.UNDERLIGHT_BROWSER || (systemChrome && existsSync(systemChrome) ? systemChrome : undefined);
+  const brandedChrome = /google[\\/].*chrome\.exe$/i.test(executablePath || "");
   context = await chromium.launchPersistentContext(profile, {
     channel: "chromium", executablePath, headless: true,
     ignoreDefaultArgs: ["--disable-extensions"],

@@ -1,0 +1,20 @@
+<h1>Implementation and releases</h1>
+<p class="lead">Underlight uses one Manifest V3 extension for all three browsers. Updated 16 November 2026.</p>
+<h2>From a selection to a record</h2>
+<p>The content script captures a DOM range in the main HTML document. A text-node index converts its endpoints into an exact quote, a starting offset, and nearby text. The selected action supplies the type and color. Notes add a plain-text comment. The new record is written to <code>chrome.storage.local</code> under a key containing its page URL and a unique ID.</p>
+<h2>Paint a saved passage</h2>
+<p>When a page opens, the script reads its records and resolves each quote against the current text. Prefix and suffix matches help distinguish duplicate quotes. The original offset is preferred when both sides still match. Unresolved records stay in storage. CSS Custom Highlights paint ranges without replacing the site's text nodes. A mutation observer schedules another pass when content changes.</p>
+<p>The note editor uses a closed shadow root to isolate its controls from page styles. The library is a separate extension page. Storage change events refresh open library and page views. Each annotation has its own key, so adding one passage does not rewrite the other records on the page.</p>
+<h2>Work on the project</h2>
+<ol><li>Load <code>extension/</code> unpacked in a browser and pin Underlight for easy access.</li><li>Change the relevant JavaScript, CSS or HTML source.</li><li>Reload the extension in the extension manager.</li><li>Refresh the target page.</li></ol>
+<p>For automated checks, use Node.js 22.12 or newer with Git on the path.</p>
+<pre><code>npm ci
+npx playwright install chromium
+npm test
+npm run docs:test</code></pre>
+<p>Pass an installed browser executable to <code>npm test --</code> to run the same suite in that browser. Tests use a temporary profile that is removed afterwards. The README includes Windows examples for all three browsers.</p>
+<h2>Release 1.0.0 — 16 November 2026</h2>
+<p>The first release includes the selection toolbar, right-click actions, seven colors, quotation-based restoration, on-page note editing, and a searchable offline library. The project uses the MIT License. The documentation font has its own SIL Open Font License.</p>
+<h2>Status and evidence — 16 November 2026</h2>
+<p>Browser integration tests passed in desktop Chrome, Edge, and Brave on Windows, each based on Chromium 157. The tests saved 21 combinations, edited a note, restarted the browser, changed the document structure, navigated between page addresses, and deleted an annotation. Each browser kept the expected local records.</p>
+<p>Support covers the main document on HTTP and HTTPS webpages. Private browser pages, PDF viewers, frames, and shadow-root content fall outside the tested annotation surface.</p>

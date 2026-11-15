@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Library · Underlight</title><link rel="icon" href="icons/32.png"><link rel="stylesheet" href="library.css">
+<script src="shared.js" defer></script><script src="library.js" defer></script>
+</head><body>
+<header><div class="brand"><img src="icons/48.png" width="32" height="32" alt="">Underlight</div><span class="local"><i></i> Stored on this device</span></header>
+<main>
+  <div class="heading"><h1>Annotation library<span>.</span></h1><p id="summary" aria-live="polite">Loading annotations…</p></div>
+  <section class="controls" aria-label="Library filters">
+    <div class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" aria-label="Search annotations" placeholder="Search passages, notes, or pages"></div>
+    <select id="color" aria-label="Filter by color"><option value="">All colors</option></select>
+  </section>
+  <nav id="kinds" aria-label="Annotation type"></nav>
+  <section id="results" aria-label="Saved annotations"></section>
+  <p id="error" role="alert"></p>
+</main>
+<dialog id="edit"><form>
+<h2>Edit note</h2><label for="body">Note text</label><textarea id="body" required rows="5"></textarea>
+<div class="actions"><button type="button" id="cancel">Cancel</button><button class="primary">Save</button></div><p id="edit-error" role="alert"></p>
+</form></dialog>
+</body></html>

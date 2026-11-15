@@ -1,0 +1,117 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>README · Underlight</title><link rel="stylesheet" href="./style.css"></head><body><header><a class="brand" href="./index.html"><img src="../../extension/icons/48.png" alt="" style="width:37px;height:37px;border-radius:12px;vertical-align:middle;margin-right:8px"> Underlight<span>.</span> <small>FIELD NOTES</small></a><div class="controls"><button id="left-toggle" aria-controls="left" aria-expanded="true">☰ <span>Documents</span></button><button id="right-toggle" aria-controls="right" aria-expanded="true">⌕ <span>Find files</span></button></div></header><div class="layout" id="layout"><aside id="left"><p class="eyebrow">THE LIBRARY</p><h2>On this project<span>.</span></h2><nav><a href="./index.html">Overview</a><a href="./usage.html">Using Underlight</a><a href="./implementation.html">Implementation and releases</a><a href="./AGENTS.html">AGENTS</a><a href="./README.html" aria-current="page">README</a></nav><p class="small">Made for curious minds.<br>Available offline.</p></aside><main><div class="content"><p class="eyebrow">UNDERLIGHT / DOCUMENTATION</p><h1>Underlight</h1>
+<p>Underlight is a local-first annotation extension for desktop Google Chrome, Microsoft Edge, and Brave. Select a passage to highlight it, underline it, or attach a note. Reopen the page to see your marks, or click the toolbar icon to browse everything you saved.</p>
+<h2>Install from source</h2>
+<ol>
+<li><p>Download and extract the repository ZIP from GitHub, or clone it to a folder you intend to keep.</p>
+<pre><code class="language-sh">git clone https://github.com/vikasvyas11/web-highlight.git
+cd web-highlight
+</code></pre>
+</li>
+<li><p>Open your browser&#39;s extension manager.</p>
+<table>
+<thead>
+<tr>
+<th>Browser</th>
+<th>Address to paste in the address bar</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Google Chrome</td>
+<td><code>chrome://extensions</code></td>
+</tr>
+<tr>
+<td>Microsoft Edge</td>
+<td><code>edge://extensions</code></td>
+</tr>
+<tr>
+<td>Brave</td>
+<td><code>brave://extensions</code></td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Enable <strong>Developer mode</strong>. Choose <strong>Load unpacked</strong> and select the <strong>extension</strong> folder inside the checkout. It contains <code>manifest.json</code>. Installation requires only the files in that folder.</p>
+</li>
+<li><p>Refresh any webpages that were already open. Use your browser&#39;s extensions menu to pin Underlight if you want its library one click away.</p>
+</li>
+</ol>
+<p>Use a desktop browser based on Chromium 134 or newer. The extension runs directly from its folder. Keep that folder in the same location when updating.</p>
+<h2>Mark a passage</h2>
+<p><img src="../images/selection.png" alt="Underlight selection toolbar with seven colors above a marked passage"></p>
+<ol>
+<li>Select ordinary text on an HTTP or HTTPS webpage. A small toolbar appears next to the selection.</li>
+<li>Choose <strong>yellow</strong>, <strong>orange</strong>, <strong>pink</strong>, <strong>red</strong>, <strong>green</strong>, <strong>blue</strong>, or <strong>black</strong>. The outlined swatch shows the current choice.</li>
+<li>Choose <strong>Highlight</strong> for a filled mark or <strong>Underline</strong> for a line under the passage. Choose <strong>Note</strong> to write a comment, then click <strong>Save</strong>.</li>
+<li>Click a saved passage to change its color, review or edit its note, or delete the annotation. Notes have a dotted underline to distinguish them from plain highlights. Press <strong>Escape</strong> to dismiss the toolbar or editor.</li>
+</ol>
+<p>You can also right-click selected text and choose an action in the <strong>Underlight</strong> submenu. These actions use the current page tab&#39;s selected color, initially yellow. For keyboard selection, enable your browser&#39;s caret browsing and extend a selection with Shift and the arrow keys. On releasing Shift, use Tab or Shift+Tab to move through the toolbar controls and Enter to activate one.</p>
+<h2>Use the library</h2>
+<p><img src="../images/library.png" alt="Underlight library grouping a note, an underline, and a highlight by source page"></p>
+<p>Click Underlight&#39;s toolbar icon or open the extension&#39;s options. The library groups annotations by page and places the most recently annotated pages first. Search the quoted text, note, title, or URL. Combine the type tabs with the color filter to narrow the list. Click a page title to reopen the source in a new tab. <strong>Edit note</strong> also works here if the source is offline or the passage has been removed.</p>
+<h2>What gets saved</h2>
+<p>Each annotation contains its type, color, selected text, up to 64 nearby characters on either side, original character offset, optional note, page title, URL, creation time, and an ID. Underlight stores each record separately in the browser profile&#39;s extension-local storage. Annotations created in different tabs can coexist.</p>
+<p>On return, Underlight finds the original wording and uses the surrounding text to resolve repeated passages. It retries when the page updates. Moving a paragraph or changing inline formatting can preserve a match. Edited or ambiguous passages may lose their on-page mark. Their saved text and notes remain in the library.</p>
+<p>Underlight stores annotations only. Opening the source still requires access to the webpage. The library itself works offline. Query parameters and hash routes beginning with <code>#/</code> or <code>#!/</code> identify different pages. Ordinary section links on a page share its marks.</p>
+<h2>Privacy, permissions, and limits</h2>
+<ul>
+<li><strong>Page access</strong> lets the content script read selected passages and repaint saved marks on supported sites. The browser may describe this as access to data on websites. You can restrict site access in the browser&#39;s extension settings.</li>
+<li><strong>storage</strong> saves the library locally. <strong>contextMenus</strong> adds the right-click actions. There are no accounts, analytics, remote scripts, or sync services.</li>
+<li>Each browser and profile has its own library. Removing the extension clears that profile&#39;s Underlight storage. For unpacked installs, changing the folder path can assign a different extension ID and open an empty library. Keep the same folder when updating.</li>
+<li>Chromium&#39;s default local storage quota is 10 MB. A failed save shows an error in the editor. Remove unneeded annotations in the library if you reach the quota. <a href="https://developer.chrome.com/docs/extensions/reference/api/storage">Chrome storage documentation</a></li>
+<li>Browser settings, extension stores, native PDF viewers, local files, embedded frames, shadow-root content, and form editors are outside this version&#39;s annotation surface. Page annotations cover selectable text in the main HTML document.</li>
+</ul>
+<h2>Update an existing installation</h2>
+<p>Run <code>git pull --ff-only</code> in the checkout, or replace its files in place with the contents of a newer download. Use <strong>Reload</strong> on Underlight&#39;s card in the extension manager and refresh your open webpages. Keep the extension installed while updating.</p>
+<h2>Development and verification</h2>
+<p>The extension uses Manifest V3, plain JavaScript and CSS. There is no runtime build or package installation. For repository development, install Node.js 22.12+ and Git, then run the following commands from the root.</p>
+<pre><code class="language-sh">npm ci
+npx playwright install chromium
+npm test
+npm run docs:test
+</code></pre>
+<p>The browser integration test uses a disposable profile and a locally fulfilled test page. It exercises the selection toolbar, every type/color combination, persistence after restarting the browser, changes to page content, in-page navigation, library search, editing and deletion. To use an installed browser, pass its executable path as an argument, for example on Windows:</p>
+<pre><code class="language-powershell">npm test -- &quot;C:/Program Files/Google/Chrome/Application/chrome.exe&quot;
+npm test -- &quot;C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe&quot;
+npm test -- &quot;C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe&quot;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Location</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>extension/manifest.json</code>, <code>background.js</code></td>
+<td>Browser permissions, entry points, toolbar and context menu actions</td>
+</tr>
+<tr>
+<td><code>extension/anchors.js</code></td>
+<td>Text indexing, capture, context matching and DOM range restoration</td>
+</tr>
+<tr>
+<td><code>extension/content.js</code>, <code>marks.css</code></td>
+<td>Selection tools, note editor and CSS Custom Highlight rendering</td>
+</tr>
+<tr>
+<td><code>extension/shared.js</code></td>
+<td>Storage keys, page identity and colors</td>
+</tr>
+<tr>
+<td><code>extension/library.*</code></td>
+<td>Local search, filters and annotation management</td>
+</tr>
+<tr>
+<td><code>tests/extension.mjs</code></td>
+<td>End-to-end browser checks</td>
+</tr>
+<tr>
+<td><code>docs/</code>, <code>scripts/</code></td>
+<td>HTML guide sources, generated site and documentation tooling</td>
+</tr>
+</tbody></table>
+<p>Open <strong>Documentation.html</strong> from the repository for the offline HTML handbook. Edit the sources under <code>docs/</code> or this README, then run <code>npm run docs:test</code> and include the rebuilt site in your commit.</p>
+<h2>Contribute</h2>
+<p>Create a branch for the change and open a pull request against <code>main</code>. For annotation bugs, include the browser version, whether the page changes after loading, and a short example you can share publicly. Use synthetic text in reports about private pages. Keep issue reports and pull requests free of saved private annotations.</p>
+<h2>License</h2>
+<p>Underlight is distributed under the MIT License. The bundled Manrope documentation font uses the SIL Open Font License. See <code>LICENSE</code> and <code>docs/fonts/Manrope-OFL.txt</code>.</p>
+</div><footer>Underlight <span>✳</span> Local webpage annotations</footer></main><aside id="right"><p class="eyebrow">THE REPOSITORY</p><h2>Find a file<span>.</span></h2><label for="search">Search by filename or path</label><input id="search" type="search" placeholder="Try a filename or folder…" autocomplete="off"><p id="count" class="small"></p><div id="results"></div></aside></div><script>const files=[".gitattributes",".gitignore","AGENTS.md","Documentation.html","LICENSE","README.md","docs/docs.config.json","docs/fonts/Manrope-OFL.txt","docs/fonts/manrope.ttf","docs/images/library.png","docs/images/selection.png","docs/implementation-content.html","docs/site/AGENTS.html","docs/site/README.html","docs/site/implementation.html","docs/site/index.html","docs/site/style.css","docs/site/usage.html","docs/style-source.css","docs/usage-content.html","extension/anchors.js","extension/background.js","extension/content.js","extension/icons/128.png","extension/icons/16.png","extension/icons/32.png","extension/icons/48.png","extension/library.css","extension/library.html","extension/library.js","extension/manifest.json","extension/marks.css","extension/shared.js","package-lock.json","package.json","scripts/build-docs.mjs","scripts/test-docs.mjs","tests/extension.mjs"];const root="../..";const site=".";const input=document.getElementById('search'),results=document.getElementById('results'),count=document.getElementById('count');function render(){const q=input.value.toLowerCase().trim();const matches=files.filter(f=>f.toLowerCase().includes(q));count.textContent=matches.length+' files';results.replaceChildren();for(const f of matches){const a=document.createElement('a');a.textContent=f;a.href=/\.md$/i.test(f)?site+'/'+f.replace(/\.md$/i,'.html'):root+'/'+f;results.append(a)}}input.addEventListener('input',render);render();for(const side of ['left','right']){const b=document.getElementById(side+'-toggle'),panel=document.getElementById(side);b.addEventListener('click',()=>{panel.hidden=!panel.hidden;b.setAttribute('aria-expanded',String(!panel.hidden));document.getElementById('layout').classList.toggle('hide-'+side,panel.hidden)})}</script></body></html>

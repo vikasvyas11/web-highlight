@@ -1,0 +1,27 @@
+::highlight(underlight-highlight-yellow) { background-color: #f6dc66; color: #171717; }
+::highlight(underlight-underline-yellow) { text-decoration: underline solid #ad8400 2px; }
+::highlight(underlight-note-yellow) { background-color: #f6dc66; color: #171717; text-decoration: underline dotted currentColor 2px; }
+
+::highlight(underlight-highlight-orange) { background-color: #ffa760; color: #171717; }
+::highlight(underlight-underline-orange) { text-decoration: underline solid #d26807 2px; }
+::highlight(underlight-note-orange) { background-color: #ffa760; color: #171717; text-decoration: underline dotted currentColor 2px; }
+
+::highlight(underlight-highlight-pink) { background-color: #f59bc9; color: #171717; }
+::highlight(underlight-underline-pink) { text-decoration: underline solid #d54492 2px; }
+::highlight(underlight-note-pink) { background-color: #f59bc9; color: #171717; text-decoration: underline dotted currentColor 2px; }
+
+::highlight(underlight-highlight-red) { background-color: #f67d79; color: #171717; }
+::highlight(underlight-underline-red) { text-decoration: underline solid #ce3737 2px; }
+::highlight(underlight-note-red) { background-color: #f67d79; color: #171717; text-decoration: underline dotted currentColor 2px; }
+
+::highlight(underlight-highlight-green) { background-color: #91d399; color: #171717; }
+::highlight(underlight-underline-green) { text-decoration: underline solid #298745 2px; }
+::highlight(underlight-note-green) { background-color: #91d399; color: #171717; text-decoration: underline dotted currentColor 2px; }
+
+::highlight(underlight-highlight-blue) { background-color: #8abaf7; color: #171717; }
+::highlight(underlight-underline-blue) { text-decoration: underline solid #367bcd 2px; }
+::highlight(underlight-note-blue) { background-color: #8abaf7; color: #171717; text-decoration: underline dotted currentColor 2px; }
+
+::highlight(underlight-highlight-black) { background-color: #262626; color: white; }
+::highlight(underlight-underline-black) { text-decoration: underline solid #191919 2px; }
+::highlight(underlight-note-black) { background-color: #262626; color: white; text-decoration: underline dotted currentColor 2px; }

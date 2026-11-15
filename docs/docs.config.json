@@ -1,0 +1,25 @@
+{
+  "product": "Underlight",
+  "brand": "Underlight",
+  "tagline": "FIELD NOTES",
+  "icon": "extension/icons/48.png",
+  "homeTitle": "Underlight handbook",
+  "homeLead": "Install Underlight, annotate a passage, and find your notes again.",
+  "footer": "Local webpage annotations",
+  "guides": [
+    {
+      "title": "Using Underlight",
+      "source": "docs/usage-content.html",
+      "page": "usage.html",
+      "eyebrow": "USER GUIDE",
+      "summary": "Install the extension and keep highlights, underlines, and notes."
+    },
+    {
+      "title": "Implementation and releases",
+      "source": "docs/implementation-content.html",
+      "page": "implementation.html",
+      "eyebrow": "CONTRIBUTOR GUIDE",
+      "summary": "Follow a selection from the page into storage and back."
+    }
+  ]
+}

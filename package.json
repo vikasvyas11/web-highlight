@@ -1,0 +1,15 @@
+{
+  "name": "underlight",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "test": "node tests/extension.mjs",
+    "docs:build": "node scripts/build-docs.mjs",
+    "docs:test": "npm run docs:build && node scripts/test-docs.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "marked": "^16.0.0"
+  }
+}
